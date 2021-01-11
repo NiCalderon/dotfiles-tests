@@ -14,4 +14,10 @@ WORKDIR /home/test/
 ARG FORCE_REBUILD=dummy
 RUN FORCE_REBUILD=${FORCE_REBUILD} git clone https://github.com/NiCalderon/dotfiles-bootstrap.git
 
+WORKDIR /home/test/dotfiles-bootstrap/
+RUN ansible-galaxy install -r requirements.yml
+RUN ansible-playbook playbook.yml
+
+WORKDIR /home/test/
+
 ENTRYPOINT ["sh"]
