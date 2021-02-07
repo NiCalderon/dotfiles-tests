@@ -7,19 +7,20 @@ RUN DEBIAN_FRONTEND=noninteractive \
 #Debug packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --quiet install vim
 
-RUN adduser --disabled-password --gecos "" user
-USER user
-WORKDIR /home/user/
+ARG ansible_user=ansible
+RUN adduser --disabled-password --gecos "" $ansible_user
+USER $ansible_user
+WORKDIR /home/$ansible_user/
 
 # The FORCE_REBUILD variable is not used by git but forces docker to rebuild
 # from this layer, essentially forcing a git clone
 ARG FORCE_REBUILD=dummy
 RUN FORCE_REBUILD=${FORCE_REBUILD} git clone https://github.com/NiCalderon/dotfiles-bootstrap.git
 
-WORKDIR /home/test/dotfiles-bootstrap/
+WORKDIR /home/$ansible_user/dotfiles-bootstrap/
 RUN ansible-galaxy install -r requirements.yml
 RUN ansible-playbook playbook.yml
 
-WORKDIR /home/test/
+WORKDIR /home/$ansible_user/
 
 ENTRYPOINT ["sh"]
