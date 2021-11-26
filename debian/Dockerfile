@@ -21,7 +21,7 @@ RUN FORCE_REBUILD=${FORCE_REBUILD} git clone https://github.com/NiCalderon/dotfi
 
 WORKDIR /home/$ansible_user/dotfiles-bootstrap/
 RUN ansible-galaxy install -r requirements.yml
-RUN ansible-playbook -vvvv playbook.yml --extra-vars "ansible_become_pass=$ansible_user"
+RUN ansible-playbook -v playbook.yml --extra-vars "ansible_become_pass=$ansible_user"
 
 WORKDIR /home/$ansible_user/
 
